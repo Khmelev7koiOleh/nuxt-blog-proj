@@ -1,0 +1,13 @@
+{
+  "folders": [
+	{
+		"name": "nuxt-blog-proj",
+		"path": "."
+	},
+	{
+		"name": "layouts",
+		"path": "../../.Trash/nuxt-blog/nuxt-blog-project/layouts"
+	}
+],
+  "settings": {}
+}
