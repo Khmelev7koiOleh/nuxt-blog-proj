@@ -8,9 +8,7 @@
     >
       <Icon name="line-md:log-out" size="20" />
     </button>
-    <UiButton class="bg-blue-900 grid items-center justify-center">
-      Send
-    </UiButton>
+    <LayoutMenu />
     <slot />
   </aside>
 </template>

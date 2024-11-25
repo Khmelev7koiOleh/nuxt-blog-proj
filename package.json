@@ -15,15 +15,23 @@
     "@nuxt/image": "^1.8.1",
     "@nuxtjs/color-mode": "^3.5.2",
     "@nuxtjs/tailwindcss": "^6.12.2",
+    "@pinia/nuxt": "^0.7.0",
     "@radix-icons/vue": "^1.0.0",
+    "@vueuse/core": "^11.3.0",
+    "appwrite": "^16.0.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "nuxt": "^3.14.1592",
+    "pinia": "^2.2.6",
     "radix-vue": "^1.9.10",
     "shadcn-nuxt": "^0.11.3",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
+    "uuid": "^11.0.3",
     "vue": "latest",
     "vue-router": "latest"
+  },
+  "overrides": {
+    "vue": "latest"
   }
 }
