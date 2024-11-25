@@ -1,13 +1,11 @@
 import { defineStore } from "pinia";
 
-// Define the interface for the user
 interface IAuthStore {
   email: string;
   name: string;
   status: boolean;
 }
 
-// Default user state
 const defaultValue: { user: IAuthStore } = {
   user: {
     email: "",
@@ -15,54 +13,34 @@ const defaultValue: { user: IAuthStore } = {
     status: false,
   },
 };
-export const useIsLoadingStore = defineStore("isLoading", {
-  state: () => ({
-    isLoading: false, // Initialize to false
-  }),
+
+export const useAuthStore = defineStore("auth", {
+  state: () => defaultValue,
+
+  getters: {
+    isUserLoggedIn: (state) => state.user.status, // Renamed to avoid conflict
+    getUser: (state) => state.user, // Getter to return the whole user object
+  },
 
   actions: {
-    /**
-     * Update the loading state
-     */
-    set(data: boolean) {
-      this.$patch({ isLoading: data });
+    clear() {
+      this.$patch(defaultValue);
     },
 
-    /**
-     * Reset loading state to false
-     */
-    reset() {
-      this.$patch({ isLoading: false });
+    set(input: IAuthStore) {
+      this.$patch({ user: input });
     },
   },
 });
 
-// Auth store definition
-export const useAuthStore = defineStore("auth", {
-  state: () => ({ ...defaultValue }),
-
-  /*************  ✨ Codeium Command ⭐  *************/
-  /**
-   * Resets the user state to its default values.
-   */
-  /******  3c8d4ba7-aa41-4f72-8a62-512e6a360d97  *******/ getters: {
-    // Renamed getter to avoid conflict with state property
-    isAuthenticated: (state) => state.user.status,
-  },
+export const useIsLoadingStore = defineStore("isLoading", {
+  state: () => ({
+    isLoading: false, // Default to false
+  }),
 
   actions: {
-    /**
-     * Clear user data by resetting to default value
-     */
-    clear() {
-      this.$patch({ user: { ...defaultValue.user } });
-    },
-
-    /**
-     * Update user data with provided input
-     */
-    set(input: IAuthStore) {
-      this.$patch({ user: input });
+    set(data: boolean) {
+      this.$patch({ isLoading: data });
     },
   },
 });

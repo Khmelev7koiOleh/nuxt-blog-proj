@@ -1,51 +1,70 @@
 <script setup lang="ts">
-import { v4 as uuid } from "uuid";
-
+import { useAuthStore, useIsLoadingStore } from "~/store/auth.store";
 import { account } from "~/lib/appwrite";
-import { useIsLoadingStore, useAuthStore } from "~/store/auth.store";
-const authStore = useAuthStore();
+import { v4 as uuid } from "uuid";
+import { useSeoMeta, useRouter, ref, watch } from "#imports"; // Ensure to import these as needed
+
+useSeoMeta({
+  title: "Login",
+});
 
 const emailRef = ref("");
 const passwordRef = ref("");
 const nameRef = ref("");
 
-const router = useRouter();
 const isLoadingStore = useIsLoadingStore();
+const authStore = useAuthStore();
+const router = useRouter();
+
+// Function to handle login
 const login = async () => {
-  isLoadingStore.set(true);
-  await account.createEmailPasswordSession(emailRef.value, passwordRef.value);
+  try {
+    isLoadingStore.set(true);
+    await account.createEmailPasswordSession(emailRef.value, passwordRef.value);
 
-  const response = await account.get();
-  if (response) {
-    authStore.set({
-      email: response.email,
-      name: response.name,
-      status: response.status,
-    });
+    const response = await account.get();
+    if (response) {
+      authStore.set({
+        email: response.email,
+        status: true,
+        name: response.name,
+      });
+      await router.push("/");
+    }
+  } catch (error) {
+    console.error("Login error:", error); // Handle error appropriately
+  } finally {
+    isLoadingStore.set(false);
   }
-
-  emailRef.value = "";
-  passwordRef.value = "";
-  nameRef.value = "";
-
-  await router.push("/");
-  isLoadingStore.set(false);
 };
 
+// Function to handle registration
 const register = async () => {
-  await account.create(
-    uuid(),
-    emailRef.value,
-    passwordRef.value,
-    nameRef.value
-  );
-  await login();
+  try {
+    isLoadingStore.set(true);
+    await account.create(
+      uuid(), // Generate a unique ID for the user
+      emailRef.value, // Ensure email is correctly assigned to the second argument
+      passwordRef.value, // Password as the third argument
+      nameRef.value // Name as the optional fourth argument
+    );
+    await login(); // Log in automatically after registration
+  } catch (error) {
+    console.error("Registration error:", error); // Handle error appropriately
+  } finally {
+    isLoadingStore.set(false);
+  }
 };
+
+// Watcher for debugging email input (optional)
+watch(emailRef, () => {
+  console.log(emailRef.value);
+});
 </script>
 
 <template>
   <div class="p-10 flex justify-center items-center min-h-screen w-full">
-    <div class="rounded bg-gray-900 w-1/4 p-5 text-gray-300">
+    <div class="rounded bg-gray-900 w-1/4 p-5">
       <h1 class="text-2xl font-bold text-center mb-5">Login</h1>
       <form>
         <UiInput
