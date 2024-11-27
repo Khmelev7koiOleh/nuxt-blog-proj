@@ -18,7 +18,7 @@ const isLoadingStore = useIsLoadingStore();
 const store = useAuthStore();
 
 const router = useRouter();
-console.log("Loaded Default Layout");
+console.log("Loaded Default Layout Component");
 
 onMounted(async () => {
   try {
