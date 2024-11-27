@@ -102,7 +102,7 @@ watch(emailRef, () => {
           v-model="nameRef"
           type="text"
           :placeholder="
-            errorMessages ? `${errorMessages.name}` : 'Enter your name...'
+            errorMessages ? `${errorMessages.name}` : 'Enter your name ..'
           "
           :class="{
             'placeholder:text-red-500': errorMessages,
