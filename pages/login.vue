@@ -4,6 +4,12 @@ import { account } from "~/lib/appwrite";
 import { v4 as uuid } from "uuid";
 import { useSeoMeta, useRouter, ref, watch } from "#imports"; // Ensure to import these as needed
 
+const errorMessages = {
+  email: "Email is required",
+  password: "Password is required",
+  name: "Name is required",
+};
+
 useSeoMeta({
   title: "Login",
 });
@@ -50,7 +56,8 @@ const register = async () => {
     );
     await login(); // Log in automatically after registration
   } catch (error) {
-    console.error("Registration error:", error); // Handle error appropriately
+    console.error("Registration error:", error);
+    // Handle error appropriately
   } finally {
     isLoadingStore.set(false);
   }
@@ -69,21 +76,38 @@ watch(emailRef, () => {
       <form>
         <UiInput
           v-model="emailRef"
-          placeholder="Email"
           type="email"
           class="mb-4"
+          :placeholder="
+            errorMessages ? `${errorMessages.email}` : 'Enter your email'
+          "
+          :class="{
+            'placeholder:text-red-500': errorMessages,
+            'placeholder:text-gray-500': !errorMessages,
+          }"
         />
         <UiInput
           v-model="passwordRef"
-          placeholder="Password"
           type="password"
           class="mb-4"
+          :placeholder="
+            errorMessages ? `${errorMessages.password}` : 'Enter your password'
+          "
+          :class="{
+            'placeholder:text-red-500': errorMessages,
+            'placeholder:text-gray-500': !errorMessages,
+          }"
         />
         <UiInput
           v-model="nameRef"
-          placeholder="Name"
           type="text"
-          class="mb-4"
+          :placeholder="
+            errorMessages ? `${errorMessages.name}` : 'Enter your name'
+          "
+          :class="{
+            'placeholder:text-red-500': errorMessages,
+            'placeholder:text-gray-500': !errorMessages,
+          }"
         />
         <div class="flex justify-center items-center gap-5">
           <UiButton
