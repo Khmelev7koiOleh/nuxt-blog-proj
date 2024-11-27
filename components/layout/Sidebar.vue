@@ -4,7 +4,7 @@
       <NuxtImg src="/icon-green.png" width="100" class="mx-auto" />
     </NuxtLink>
     <button
-      class="absolute top-5 right-5 transition-colors hover:text-purple-400 text-2xl text-white"
+      class="absolute top-5 right-5 transition-colors hover:text-purple-500 text-2xl text-white"
     >
       <Icon name="line-md:log-out" size="20" @click="logout" />
     </button>
