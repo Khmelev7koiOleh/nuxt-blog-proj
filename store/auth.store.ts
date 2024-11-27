@@ -18,7 +18,7 @@ export const useAuthStore = defineStore("auth", {
   state: () => defaultValue,
 
   getters: {
-    isUserLoggedIn: (state) => state.user.status, // Renamed to avoid conflict
+    isAuth: (state) => state.user.status, // Renamed to avoid conflict
     getUser: (state) => state.user, // Getter to return the whole user object
   },
 
