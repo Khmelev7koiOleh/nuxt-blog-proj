@@ -114,7 +114,7 @@ watch(emailRef, () => {
             type="button"
             class="bg-gray-800 text-white rounded hover:bg-gray-700"
             @click="login"
-            >Login .</UiButton
+            >Login</UiButton
           >
           <UiButton
             type="button"
