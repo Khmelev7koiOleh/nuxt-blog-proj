@@ -1,4 +1,4 @@
-export const APP_WRITE_ID = "nuxt-blog-proj";
+export const APP_WRITE_ID = "localhost-base";
 export const DB_ID = "crm-base";
 export const COLLECTION_DEALS = "deals";
 export const COLLECTION_CUSTOMERS = "customers";
