@@ -8,7 +8,7 @@ const client = new Client()
 
 // Initialize Appwrite storage
 export const storage = new Storage(client);
-
+export { client };
 export const account = new Account(client);
 
 export { ID } from "appwrite";
