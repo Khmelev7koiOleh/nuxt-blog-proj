@@ -52,8 +52,7 @@ onMounted(() => {
 });
 
 // Beobachte Änderungen in der `blogs`-Datenbank und rufe die Methode erneut auf
-watch(blogs, async () => {
-  console.log("Blogs haben sich geändert, aktualisiere die Liste...");
+watch(blogs && useKannban, async () => {
   await getAllBlogs(); // Ruf die Blogs erneut ab, wenn sie sich ändern
 });
 </script>
