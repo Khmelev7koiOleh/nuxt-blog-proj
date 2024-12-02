@@ -77,7 +77,10 @@ watch(blogs && useKannban, async () => {
       </div>
 
       <div v-for="blog in blogs" :key="blog.$id">
-        <NuxtLink :href="`./edit/${blog.$id}`">
+        <NuxtLink
+          :href="`./edit/${blog.$id}`"
+          class="w-full flex justify-center items-center"
+        >
           <KannbanABlog :blog="blog" />
         </NuxtLink>
       </div>

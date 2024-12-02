@@ -1,6 +1,6 @@
 <template>
   <div class="gap-4 p-4 bg-green-800 rounded-lg">
-    <div class="flex justify-between gap-8 w-full">
+    <div class="flex justify-between gap-8 w-[90%]">
       <div class="w-2/5">
         <img :src="blog.image" alt="Blog Image" />
       </div>

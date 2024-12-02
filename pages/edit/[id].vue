@@ -1,13 +1,16 @@
 <script setup lang="ts">
+// Do not click cmd Z
 import { ref, onMounted, watch } from "vue";
 import { useRoute } from "vue-router"; // To get the route parameters
-import { DB } from "~/lib/appwrite"; // Assuming DB is set up correctly
-import { COLLECTION_BLOGS, DB_ID } from "@/app.constants";
+import { DB, storage, account } from "~/lib/appwrite"; // Assuming DB is set up correctly
+import { COLLECTION_BLOGS, DB_ID, COLLECTION_COMMENTS } from "@/app.constants";
 import type { BLOG_DATA } from "~/components/kannban/kannban.types";
+
 import dayjs from "dayjs";
 
 // Define refs for blog data and loading/error states
 const blog = ref<BLOG_DATA | null>(null); // Single blog data instead of an array
+
 const isLoading = ref(true);
 const errorMessage = ref<string | null>(null);
 
@@ -40,7 +43,6 @@ const getBlogById = async () => {
   }
 };
 
-// Fetch the blog when the component is mounted
 onMounted(() => {
   getBlogById();
 });
@@ -72,6 +74,10 @@ onMounted(() => {
         <p class="text-base font-bold text-center">{{ blog.description }}</p>
       </div>
     </div>
-    <!-- Blog meta information -->
+    <!-- commnets -->
+  </div>
+
+  <div>
+    <CommentsIComment />
   </div>
 </template>
