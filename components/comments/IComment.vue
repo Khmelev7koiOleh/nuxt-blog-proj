@@ -2,19 +2,25 @@
 import { ref, onMounted } from "vue";
 import { v4 as uuid } from "uuid";
 import { DB, account } from "~/lib/appwrite";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { COLLECTION_COMMENTS, DB_ID } from "@/app.constants";
 import dayjs from "dayjs";
 import type { IComment } from "./comments.store";
+import { Query } from "appwrite";
 
 const comments = ref<IComment[]>([]);
 const router = useRouter();
+const route = useRoute();
+const blogId = ref(route.params.id as string);
+
 const userName = ref("");
+
 const commentsAmount = ref(0);
 const commentRef = ref("");
 const isLoading = ref(false);
 const errorMessage = ref<string | null>(null);
 
+// Resets comment input form
 const resetForm = () => {
   commentRef.value = "";
 };
@@ -23,37 +29,60 @@ const onCancel = () => {
   resetForm();
 };
 
+// Fetch all comments
 const getAllComments = async () => {
   try {
     isLoading.value = true;
-    const response = await DB.listDocuments(DB_ID, COLLECTION_COMMENTS);
+    let commentsList: IComment[] = [];
+    let page = 1;
+    let moreComments = true;
 
-    if (response) {
-      comments.value = response.documents.map((document) => ({
-        $id: document.$id,
-        text: document.text,
-        $createdAt: dayjs(document.$createdAt).format("MM/DD/YYYY HH:mm"),
-      }));
-      commentsAmount.value = comments.value.length;
-    } else {
-      errorMessage.value = "Comments not found.";
+    while (moreComments) {
+      const response = await DB.listDocuments(DB_ID, COLLECTION_COMMENTS, [
+        Query.equal("blog", blogId.value),
+        Query.limit(50),
+        Query.offset((page - 1) * 50),
+      ]);
+
+      if (response?.documents?.length > 0) {
+        commentsList = commentsList.concat(
+          response.documents.map((document) => ({
+            $id: document.$id,
+            text: document.text,
+            $createdAt: dayjs(document.$createdAt).format("MM/DD/YYYY HH:mm"),
+            blog: document.blog,
+            user: document.user, // Ensure user ID is stored
+          }))
+        );
+
+        if (response.documents.length < 50) {
+          moreComments = false;
+        } else {
+          page++;
+        }
+      } else {
+        moreComments = false;
+      }
     }
 
-    comments.value.sort((a, b) => {
-      const dateA = new Date(a.$createdAt);
-      const dateB = new Date(b.$createdAt);
-      return dateB.getTime() - dateA.getTime(); // Neuste zuerst
-    });
+    comments.value = commentsList;
+    commentsAmount.value = comments.value.length;
+
+    comments.value.sort(
+      (a, b) =>
+        new Date(b.$createdAt).getTime() - new Date(a.$createdAt).getTime()
+    );
   } catch (error) {
     console.error("Error fetching comments:", error);
-    errorMessage.value = "An error occurred while fetching the comments.";
+    errorMessage.value = `Error fetching comments: ${error.message}`;
   } finally {
     isLoading.value = false;
   }
 };
 
+// Create new comment
 const createComment = async () => {
-  if (commentRef.value.length >= 1) {
+  if (commentRef.value.trim().length >= 1) {
     try {
       const user = await account.get().catch(() => {
         alert("Please log in first.");
@@ -64,23 +93,22 @@ const createComment = async () => {
       const newComment = {
         $id: uuid(),
         text: commentRef.value,
+        blog: blogId.value,
+        user: userName.value,
         $createdAt: dayjs().format("MM/DD/YYYY HH:mm"),
       };
 
-      const response = await DB.createDocument(
-        DB_ID,
-        COLLECTION_COMMENTS,
-        newComment.$id,
-        { text: newComment.text }
-      );
-
-      if (response) {
-        resetForm();
-        comments.value.unshift(newComment); // Füge den neuen Kommentar oben ein
-        commentsAmount.value = comments.value.length; // Aktualisiere die Anzahl
-      }
+      await DB.createDocument(DB_ID, COLLECTION_COMMENTS, newComment.$id, {
+        text: newComment.text,
+        blog: newComment.blog,
+        user: newComment.user,
+      });
+      console.log(user);
+      resetForm();
+      comments.value.unshift(newComment);
+      commentsAmount.value = comments.value.length;
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error creating comment:", error);
     }
   } else {
     alert("Please enter something.");
@@ -88,9 +116,9 @@ const createComment = async () => {
 };
 
 onMounted(async () => {
-  await getAllComments();
   const user = await account.get();
   userName.value = user.email;
+  await getAllComments();
 });
 </script>
 
@@ -104,7 +132,8 @@ onMounted(async () => {
           v-model="commentRef"
           placeholder="Write a comment"
           type="text"
-          class="w-full bg-transparent placeholder:text-white placeholder:font-light focus:outline-none text-gray-200"
+          @keyup.enter="createComment"
+          class="w-full bg-transparent placeholder:text-black placeholder:font-light focus:outline-none text-gray-600"
         />
         <div class="border-b-2 border-gray-500"></div>
 
@@ -112,7 +141,7 @@ onMounted(async () => {
           <button @click="onCancel" class="px-4 py-2">Cancel</button>
           <button
             @click="createComment()"
-            class="px-4 py-2 rounded-lg bg-gray-600"
+            class="px-4 py-2 rounded-lg bg-gray-600 text-white"
           >
             Create
           </button>
@@ -124,14 +153,16 @@ onMounted(async () => {
       <div v-else>
         <div v-for="comment in comments" :key="comment.$id" class="mt-8">
           <div class="flex gap-4 justify-between">
-            <div class="px-2">By: {{ userName }}</div>
+            <div class="px-2">By: {{ comment.user }}</div>
             <div
               class="inline-block rounded-md px-2 py-1 bg-gray-500 text-white"
             >
               {{ comment.$createdAt }}
             </div>
           </div>
-          <div class="border border-gray-500 p-4">{{ comment.text }}</div>
+          <div class="border border-gray-500 p-4 rounded-lg">
+            {{ comment.text }}
+          </div>
         </div>
       </div>
     </section>
