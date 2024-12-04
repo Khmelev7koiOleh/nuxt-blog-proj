@@ -10,7 +10,7 @@
     </aside>
 
     <!-- Main Content -->
-    <div :class="[{ 'md:ml-[220px] ml-[100px]': store.isAuth }, 'flex-1 p-4']">
+    <div :class="[{ 'md:ml-[220px] ml-[95px]': store.isAuth }, 'flex-1 p-4']">
       <slot />
     </div>
   </section>
