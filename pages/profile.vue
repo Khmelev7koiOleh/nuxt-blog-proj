@@ -12,15 +12,11 @@
         class="mx-auto rounded-full border-2 border-gray-800 sm:w-[200px] sm:h-[200px] w-[150px] h-[150px] object-cover"
       />
       <div class="flex flex-col justify-center gap-4 w-full">
-        <div class="text-2xl text-gray-200 break-words">
-          My name: {{ user.name }}
-        </div>
-        <div class="text-xl text-gray-200 break-words">
-          My email: {{ user.email }}
-        </div>
-        <div class="text-gray-200 break-words">
+        <div class="text-2xl text-gray-200">My name: {{ user.name }}</div>
+        <div class="text-xl text-gray-200">My email: {{ user.email }}</div>
+        <div class="text-gray-200 overflow-hidden">
           Account was created at:
-          <span class="text-md">{{ user.$createdAt }}</span>
+          <span class="text-lg">{{ user.$createdAt }}</span>
         </div>
       </div>
     </div>
