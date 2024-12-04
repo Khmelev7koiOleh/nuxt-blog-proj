@@ -79,14 +79,11 @@ watch(blogs && useKannban, async () => {
 
       <!-- Display Blogs -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div
-          v-for="blog in blogs"
-          :key="blog.$id"
-          class="w-full flex justify-center"
-        >
+        <div v-for="blog in blogs" :key="blog.$id" class="flex flex-col gap-8">
+          >
           <NuxtLink
             :href="`./edit/${blog.$id}`"
-            class="w-full flex justify-center items-center mx-auto"
+            class="w-full flex justify-center items-center"
           >
             <KannbanABlog :blog="blog" />
           </NuxtLink>
