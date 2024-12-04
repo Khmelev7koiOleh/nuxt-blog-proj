@@ -4,13 +4,13 @@
     <!-- Sidebar for medium and larger screens -->
     <aside
       v-if="store.isAuth"
-      class="md:block fixed top-0 left-0 z-10 w-[130px] md:w-[220px] bg-gray-200 h-full flex items-center justify-center"
+      class="md:block fixed top-0 left-0 z-10 w-[70px] md:w-[200px] bg-gray-200 h-full flex items-center justify-center"
     >
       <LayoutSidebar />
     </aside>
 
     <!-- Main Content -->
-    <div :class="[{ 'md:ml-[220px] ml-[95px]': store.isAuth }, 'flex-1 p-4']">
+    <div :class="[{ 'md:ml-[200px] ml-[40px]': store.isAuth }, 'flex-1 p-4']">
       <slot />
     </div>
   </section>
