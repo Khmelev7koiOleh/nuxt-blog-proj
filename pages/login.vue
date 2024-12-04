@@ -71,7 +71,9 @@ watch(emailRef, () => {
 
 <template>
   <div class="p-10 flex justify-center items-center min-h-screen w-full">
-    <div class="rounded bg-gray-900 w-1/4 p-5 text-white">
+    <div
+      class="rounded bg-gray-900 w-full sm:w-3/4 md:w-1/3 lg:w-1/4 p-5 text-white"
+    >
       <h1 class="text-2xl font-bold text-center mb-5">Login</h1>
       <form>
         <UiInput

@@ -49,35 +49,52 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-if="isLoading" class="text-center py-4">Loading blog...</div>
+  <div class="px-4 py-2 overflow-x-hidden">
+    <div v-if="isLoading" class="text-center py-4">Loading blog...</div>
 
-  <div v-else-if="errorMessage" class="text-center py-4 text-red-500">
-    {{ errorMessage }}
-  </div>
+    <div v-else-if="errorMessage" class="text-center py-4 text-red-500">
+      {{ errorMessage }}
+    </div>
 
-  <div v-else class="gap-4 p-4 rounded-lg">
-    <div class="flex justify-between gap-8 mx-8 mt-6">
-      <NuxtLink to="/blog">
-        <Icon name="line-md:arrow-left" size="30"
-      /></NuxtLink>
-      <div class="rounded-md px-2 py-1 bg-blue-600 text-white">
-        {{ dayjs(blog.$createdAt).format("DD-MM-YYYY") }}
+    <div v-else class="gap-4 p-4 rounded-lg max-w-full box-border">
+      <div class="flex justify-between gap-4 mx-auto mt-6 max-w-full">
+        <NuxtLink to="/blog">
+          <Icon name="line-md:arrow-left" size="30" />
+        </NuxtLink>
+        <div class="rounded-md px-2 py-1 bg-blue-600 text-white">
+          {{ dayjs(blog.$createdAt).format("DD-MM-YYYY") }}
+        </div>
+      </div>
+
+      <!-- Blog content -->
+      <div class="flex flex-col gap-8 justify-center items-center max-w-full">
+        <h2 class="text-2xl font-bold text-center break-words w-full">
+          {{ blog.title }}
+        </h2>
+
+        <div class="w-full max-w-[65%]">
+          <img :src="blog.image" alt="Blog Image" class="w-full" />
+        </div>
+
+        <div class="flex flex-col gap-4 w-full px-4 box-border">
+          <textarea
+            rows="10"
+            class="text-base font-bold text-center break-words w-full"
+          >
+            {{ blog.description }}
+          </textarea>
+        </div>
       </div>
     </div>
-    <!-- Blog content -->
-    <div class="flex flex-col gap-8 justify-center items-center">
-      <h2 class="text-2xl font-bold text-center">{{ blog.title }}</h2>
-      <div class="w-[65%]">
-        <img :src="blog.image" alt="Blog Image" />
-      </div>
-      <div class="flex flex-col gap-4">
-        <p class="text-base font-bold text-center">{{ blog.description }}</p>
-      </div>
-    </div>
-    <!-- commnets -->
-  </div>
 
-  <div>
+    <!-- Comments -->
     <CommentsIComment />
   </div>
 </template>
+
+<style scoped>
+html,
+body {
+  overflow-x: hidden; /* Prevents scrolling on the body */
+}
+</style>

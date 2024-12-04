@@ -1,14 +1,23 @@
 <template>
-  <div class="gap-4 p-4 bg-green-800 rounded-lg min-w-full">
+  <div class="gap-4 p-4 bg-green-800 rounded-lg w-full">
     <div class="flex justify-between gap-8 w-[90%]">
-      <div class="w-2/5">
-        <img :src="blog.image" alt="Blog Image" />
+      <div class="w-[400px] h-[250px] flex justify-center items-center">
+        <img
+          :src="blog.image"
+          class="max-h-[250px] max-w-[400px]"
+          alt="Blog Image"
+        />
       </div>
       <div class="text-white w-3/6 flex flex-col gap-4">
         <h2 class="text-2xl font-bold text-center">
           {{ blog.title }}
         </h2>
-        <p class="text-base font-bold text-center">{{ blog.description }}</p>
+        <textarea
+          rows="5"
+          class="text-base font-bold text-center w-full break-words bg-transparent"
+        >
+          {{ blog.description }}
+        </textarea>
       </div>
     </div>
     <div class="flex justify-between mx-8 mt-6">

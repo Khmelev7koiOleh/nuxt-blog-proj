@@ -1,9 +1,16 @@
 <template>
   <LayoutLoader v-if="isLoadingStore.isLoading" />
-  <section :class="{ grid: store.isAuth }" style="min-height: 100vh">
-    <aside><LayoutSidebar v-if="store.isAuth" /></aside>
+  <section class="min-h-screen flex flex-col md:flex-row">
+    <!-- Sidebar for medium and larger screens -->
+    <aside
+      v-if="store.isAuth"
+      class="md:block fixed top-0 left-0 z-10 w-[100px] bg-gray-200 h-full"
+    >
+      <LayoutSidebar />
+    </aside>
 
-    <div>
+    <!-- Main Content -->
+    <div :class="[{ 'md:ml-[220px] ml-[120px]': store.isAuth }, 'flex-1 p-4']">
       <slot />
     </div>
   </section>
@@ -11,19 +18,16 @@
 
 <script setup lang="ts">
 import { account } from "~/lib/appwrite";
-
 import { useAuthStore, useIsLoadingStore } from "~/store/auth.store";
+import { useRouter } from "vue-router";
 
 const isLoadingStore = useIsLoadingStore();
 const store = useAuthStore();
-
 const router = useRouter();
-console.log("Loaded Default Layout Component");
 
 onMounted(async () => {
   try {
     const user = await account.get();
-
     if (user) store.set(user);
   } catch (error) {
     console.error("Error:", error);
@@ -33,10 +37,3 @@ onMounted(async () => {
   }
 });
 </script>
-
-<style scoped>
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 6fr;
-}
-</style>

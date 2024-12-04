@@ -11,7 +11,7 @@ export const MENU_DATA: IMenuItem[] = [
     icon: "radix-icons:home",
   },
   {
-    name: "Blog",
+    name: "Blogs",
     url: "/blog",
     icon: "radix-icons:component-1",
   },

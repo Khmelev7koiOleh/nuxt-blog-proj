@@ -60,7 +60,7 @@ watch(blogs && useKannban, async () => {
 <template>
   <div class="text-2xl text-center font-bold my-8">Blogs</div>
   <div class="text-2xl font-bold m-8">All blogs</div>
-  <div><KannbanKBlog /></div>
+
   <section class="w-full h-[100vh] container">
     <div class="flex flex-col gap-12">
       <div class="flex justify-end p-4 w-full">

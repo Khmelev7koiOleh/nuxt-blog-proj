@@ -121,7 +121,6 @@ onMounted(async () => {
   await getAllComments();
 });
 </script>
-
 <template>
   <div class="px-4 py-2">
     <div>Comments: {{ commentsAmount }}</div>
@@ -133,14 +132,14 @@ onMounted(async () => {
           placeholder="Write a comment"
           type="text"
           @keyup.enter="createComment"
-          class="w-full bg-transparent placeholder:text-black placeholder:font-light focus:outline-none text-gray-600"
+          class="w-full sm:w-3/4 md:w-1/2 lg:w-1/3 bg-transparent placeholder:text-black placeholder:font-light focus:outline-none text-gray-600"
         />
-        <div class="border-b-2 border-gray-500"></div>
+        <div class="border-b-2 border-gray-500 mt-4"></div>
 
         <div class="flex justify-end p-4 gap-4">
           <button @click="onCancel" class="px-4 py-2">Cancel</button>
           <button
-            @click="createComment()"
+            @click="createComment"
             class="px-4 py-2 rounded-lg bg-gray-600 text-white"
           >
             Create
@@ -148,8 +147,10 @@ onMounted(async () => {
         </div>
       </div>
 
-      <div v-if="isLoading">Loading...</div>
-      <div v-else-if="errorMessage">{{ errorMessage }}</div>
+      <div v-if="isLoading" class="text-center py-4">Loading...</div>
+      <div v-else-if="errorMessage" class="text-center py-4 text-red-500">
+        {{ errorMessage }}
+      </div>
       <div v-else>
         <div v-for="comment in comments" :key="comment.$id" class="mt-8">
           <div class="flex gap-4 justify-between">
@@ -160,9 +161,21 @@ onMounted(async () => {
               {{ comment.$createdAt }}
             </div>
           </div>
-          <div class="border border-gray-500 p-4 rounded-lg">
+
+          <textarea
+            rows="3"
+            class="w-full sm:w-3/4 md:w-1/2 lg:w-1/3 p-2 mt-2 border rounded"
+          >
             {{ comment.text }}
-          </div>
+          </textarea>
+          <!-- Uncomment and use if textarea is needed for editing -->
+          <!-- 
+          <textarea
+            v-model="comment.text"
+            class="w-full break-words rounded-md px-2 py-1 bg-gray-500 text-white"
+            readonly
+          ></textarea>
+          -->
         </div>
       </div>
     </section>
