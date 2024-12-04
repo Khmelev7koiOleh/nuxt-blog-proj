@@ -59,10 +59,11 @@ watch(blogs && useKannban, async () => {
 
 <template>
   <div class="text-2xl text-center font-bold my-8">Blogs</div>
-  <div class="text-2xl font-bold m-8">All blogs</div>
+  <div class="text-2xl font-bold mx-4 sm:mx-8">All blogs</div>
 
-  <section class="w-full h-[100vh] container">
-    <div class="flex flex-col gap-12">
+  <section class="w-full min-h-screen container mx-auto">
+    <div class="flex flex-col gap-8">
+      <!-- Create New Post Button -->
       <div class="flex justify-end p-4 w-full">
         <UiButton
           class="px-4 py-2 bg-blue-500 text-white rounded-md"
@@ -72,17 +73,25 @@ watch(blogs && useKannban, async () => {
         </UiButton>
       </div>
 
+      <!-- Create Blog Popup -->
       <div v-if="useKannban.onOpenBlog">
         <KannbanCreateBlogPopup />
       </div>
 
-      <div v-for="blog in blogs" :key="blog.$id">
-        <NuxtLink
-          :href="`./edit/${blog.$id}`"
-          class="w-[90%] flex justify-center items-center mx-auto"
+      <!-- Display Blogs -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div
+          v-for="blog in blogs"
+          :key="blog.$id"
+          class="w-full flex justify-center"
         >
-          <KannbanABlog :blog="blog" />
-        </NuxtLink>
+          <NuxtLink
+            :href="`./edit/${blog.$id}`"
+            class="w-full flex justify-center items-center mx-auto"
+          >
+            <KannbanABlog :blog="blog" />
+          </NuxtLink>
+        </div>
       </div>
     </div>
   </section>

@@ -4,7 +4,7 @@
     <!-- Sidebar for medium and larger screens -->
     <aside
       v-if="store.isAuth"
-      class="md:block fixed top-0 left-0 z-10 w-[130px] bg-gray-200 h-full flex items-center justify-center"
+      class="md:block fixed top-0 left-0 z-10 w-[130px] md:w-[220px] bg-gray-200 h-full flex items-center justify-center"
     >
       <LayoutSidebar />
     </aside>
