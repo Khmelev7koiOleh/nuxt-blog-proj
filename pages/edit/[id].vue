@@ -72,7 +72,7 @@ onMounted(() => {
           {{ blog.title }}
         </h2>
 
-        <div class="w-full max-w-[65%]">
+        <div class="max-w-[100%]">
           <img :src="blog.image" alt="Blog Image" class="w-full" />
         </div>
 

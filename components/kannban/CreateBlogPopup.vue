@@ -98,10 +98,9 @@ const createBlog = async () => {
   }
 };
 </script>
-
 <template>
   <section
-    class="w-2/4 h-[85%] container bg-green-900 rounded-lg py-8 flex flex-col gap-18 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
+    class="w-full sm:w-3/4 md:w-2/4 h-[85%] container bg-green-900 rounded-lg py-8 flex flex-col gap-8 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
   >
     <div class="absolute top-6 left-6">
       <Icon

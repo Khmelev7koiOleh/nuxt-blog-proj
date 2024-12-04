@@ -56,7 +56,6 @@ watch(blogs && useKannban, async () => {
   await getAllBlogs(); // Ruf die Blogs erneut ab, wenn sie sich ändern
 });
 </script>
-
 <template>
   <div class="text-2xl text-center font-bold my-8">Blogs</div>
   <div class="text-2xl font-bold mx-4 sm:mx-8">All blogs</div>
@@ -96,5 +95,4 @@ watch(blogs && useKannban, async () => {
     </div>
   </section>
 </template>
-
 <style scoped></style>
