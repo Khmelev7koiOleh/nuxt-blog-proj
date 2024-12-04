@@ -111,7 +111,7 @@ watch(emailRef, () => {
             'placeholder:text-gray-500': !errorMessages,
           }"
         />
-        <div class="flex justify-center items-center gap-5">
+        <div class="flex justify-center items-center gap-5 p-4">
           <UiButton
             type="button"
             class="bg-gray-800 text-white rounded hover:bg-gray-700"
