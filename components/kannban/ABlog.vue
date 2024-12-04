@@ -1,10 +1,10 @@
 <template>
-  <div class="gap-4 p-4 bg-green-800 rounded-lg w-full">
+  <div class="gap-4 p-4 bg-green-800 rounded-lg w-full hidden md:inline-block">
     <div class="flex justify-between gap-8 w-[90%]">
       <div class="w-[400px] h-[250px] flex justify-center items-center">
         <img
           :src="blog.image"
-          class="max-h-[250px] max-w-[400px]"
+          class="max-h-[100px] max-w-[200px]"
           alt="Blog Image"
         />
       </div>
@@ -18,6 +18,33 @@
         >
           {{ blog.description }}
         </textarea>
+      </div>
+    </div>
+    <div class="flex justify-between mx-8 mt-6">
+      <div class="rounded-md px-2 py-1 bg-blue-600 text-white">
+        {{ dayjs(blog.$createdAt).format("DD-MM-YYYY") }}
+      </div>
+      <button
+        class="flex rounded-md px-3 py-1 bg-blue-600 text-white gap-2 items-center hover:bg-blue-500 transition-all"
+      >
+        <div>View</div>
+        <Icon name="line-md:arrow-right" size="20" />
+      </button>
+    </div>
+  </div>
+
+  <div class="gap-4 p-4 bg-green-800 rounded-lg w-full inline-block md:hidden">
+    <div class="flex flex-col justify-between gap-8 w-[90%]">
+      <h2 class="text-lg font-bold text-center text-white">
+        {{ blog.title }}
+      </h2>
+      <div
+        class="w-[200px] h-[200px] flex justify-center items-center overflow-hidden"
+      >
+        <img :src="blog.image" width="200" alt="Blog Image" />
+      </div>
+      <div class="text-gray-200 w-full flex justify-center gap-4">
+        {{ blog.description.slice(0, 30) }}...
       </div>
     </div>
     <div class="flex justify-between mx-8 mt-6">
