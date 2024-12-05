@@ -71,7 +71,12 @@ watch(blogs && useKannban, async () => {
           Create new post
         </UiButton>
       </div>
-
+      <div
+        v-if="blogs.length === 0 && !isLoading"
+        class="text-center px-[10%] py-[10%] text-3xl border text-pretty rounded-md bg-gradient-to-r from-indigo-500 via-gray-500 to-gray-100 text-gray-200"
+      >
+        There is no blogs
+      </div>
       <!-- Create Blog Popup -->
       <div v-if="useKannban.onOpenBlog">
         <KannbanCreateBlogPopup />

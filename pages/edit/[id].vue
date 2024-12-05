@@ -3,8 +3,17 @@
 import { ref, onMounted, watch } from "vue";
 import { useRoute } from "vue-router"; // To get the route parameters
 import { DB, storage, account } from "~/lib/appwrite"; // Assuming DB is set up correctly
-import { COLLECTION_BLOGS, DB_ID, COLLECTION_COMMENTS } from "@/app.constants";
+import {
+  COLLECTION_BLOGS,
+  DB_ID,
+  COLLECTION_COMMENTS,
+  STORAGE_ID,
+} from "@/app.constants";
 import type { BLOG_DATA } from "~/components/kannban/kannban.types";
+import { useRouter } from "vue-router";
+
+const onDelete = ref(false);
+const router = useRouter();
 
 import dayjs from "dayjs";
 
@@ -43,6 +52,23 @@ const getBlogById = async () => {
   }
 };
 
+const deleteBlog = async () => {
+  try {
+    onDelete.value = true;
+
+    await DB.deleteDocument(DB_ID, COLLECTION_BLOGS, blogId);
+    await DB.deleteDocument(DB_ID, COLLECTION_COMMENTS, blogId);
+    console.log("Blog deleted successfully.");
+  } catch (error) {
+    console.error("Error deleting blog:", error);
+  }
+  onDelete.value = false;
+};
+
+watch(blog && onDelete, async () => {
+  await getBlogById(); // Ruf die Blogs erneut ab, wenn sie sich ändern
+  router.push("/blog");
+});
 onMounted(() => {
   getBlogById();
 });
@@ -61,8 +87,18 @@ onMounted(() => {
         <NuxtLink to="/blog">
           <Icon name="line-md:arrow-left" size="30" />
         </NuxtLink>
-        <div class="rounded-md px-2 py-1 bg-blue-600 text-white">
-          {{ dayjs(blog.$createdAt).format("DD-MM-YYYY") }}
+
+        <div class="flex justify-end mx-0 ml-0 gap-3">
+          <div class="rounded-md px-2 py-1 bg-blue-600 text-white inline-block">
+            {{ dayjs(blog.$createdAt).format("DD-MM-YYYY") }}
+          </div>
+          <button
+            class="flex rounded-md px-3 py-1 bg-red-600 text-white gap-2 items-center hover:bg-red-500 transition-all"
+            @click="deleteBlog"
+          >
+            <div>Delete</div>
+            <Icon name="radix-icons:trash" size="20" />
+          </button>
         </div>
       </div>
 
