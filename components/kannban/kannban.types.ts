@@ -4,6 +4,7 @@ export interface BLOG_DATA {
   description: string;
   image: string;
   $createdAt: string;
+  creator: string;
   status: false;
   documentId?: string; // Add this line
 }

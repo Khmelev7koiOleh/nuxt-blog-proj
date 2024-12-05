@@ -17,6 +17,8 @@ const router = useRouter();
 
 import dayjs from "dayjs";
 
+const user = ref({});
+
 // Define refs for blog data and loading/error states
 const blog = ref<BLOG_DATA | null>(null); // Single blog data instead of an array
 
@@ -40,6 +42,7 @@ const getBlogById = async () => {
         $createdAt: response.$createdAt,
         status: response.status,
         documentId: response.$id,
+        creator: response.creator,
       };
     } else {
       errorMessage.value = "Blog not found.";
@@ -69,8 +72,10 @@ watch(blog && onDelete, async () => {
   await getBlogById(); // Ruf die Blogs erneut ab, wenn sie sich ändern
   router.push("/blog");
 });
-onMounted(() => {
+onMounted(async () => {
   getBlogById();
+  const userData = await account.get();
+  user.value = userData;
 });
 </script>
 
@@ -93,10 +98,12 @@ onMounted(() => {
             {{ dayjs(blog.$createdAt).format("DD-MM-YYYY") }}
           </div>
           <button
+            v-if="user.email === blog.creator"
             class="flex rounded-md px-3 py-1 bg-red-600 text-white gap-2 items-center hover:bg-red-500 transition-all"
             @click="deleteBlog"
           >
             <div>Delete</div>
+
             <Icon name="radix-icons:trash" size="20" />
           </button>
         </div>

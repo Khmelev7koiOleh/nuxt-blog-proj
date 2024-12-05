@@ -9,6 +9,8 @@ import { IUseKannban } from "./kannban.store";
 const router = useRouter();
 const useKannban = IUseKannban();
 
+const user = ref({});
+
 const titleRef = ref("");
 const descriptionRef = ref("");
 const imageRef = ref<File | null>(null);
@@ -73,6 +75,7 @@ const createBlog = async () => {
         title: titleRef.value,
         description: descriptionRef.value,
         image: imageURL,
+        creator: user.email,
       }
     );
 
@@ -97,6 +100,11 @@ const createBlog = async () => {
     isLoading.value = false;
   }
 };
+
+onMounted(async () => {
+  const userData = await account.get();
+  user.value = userData;
+});
 </script>
 <template>
   <section
